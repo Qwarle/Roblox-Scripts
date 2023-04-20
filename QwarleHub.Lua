@@ -629,7 +629,8 @@ NoclipSection1:AddToggle({
 				Time = 5
 			})
 
-	elseif db == false then
+	else
+		
 		db = false
 
 		if notif then
