@@ -609,14 +609,19 @@ NoclipSection1:AddToggle({
 	Default = false,
 	Callback = function(db)
 		if db then
-			if not noclip == false then
-				for a, b in pairs(game.Workspace:GetChildren()) do
-				if b.Name == plr.Name then
-				for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
-				if v:IsA("BasePart") then
-				v.CanCollide = false
-				end end end end
-			end
+			noclip = true
+			Stepped = game:GetService("RunService").Stepped:Connect(function()
+				if noclip == true then
+					for a, b in pairs(game.Workspace:GetChildren()) do
+					if b.Name == plr.Name then
+					for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
+					if v:IsA("BasePart") then
+					v.CanCollide = false
+					end end end end
+				else
+					Stepped:Disconnect()
+				end
+			end)
 
 			OrionLib:MakeNotification({
 				Name = "Noclip Message!",
