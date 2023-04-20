@@ -705,17 +705,17 @@ FlySection1:AddButton({
   	end
 })
 
-local GravitySection1Section1 = OtherTab1:AddSection({
+local GravitySection1 = OtherTab1:AddSection({
 	Name =	"Gravity"
 })
 
 local gr = false
 
-GravitySection1Section1:AddButton({
-	Name = "Gravity",
+GravitySection1:AddButton({
+	Name = "Reset Gravity",
 	Callback = function(db)
 
-		gr = false
+		game.Workspace.Gravity = 196.2
 
 		OrionLib:MakeNotification({
 			Name = "Gravity Message!",
@@ -727,7 +727,7 @@ GravitySection1Section1:AddButton({
   	end
 })
 
-GravitySection1Section1:AddSlider({
+GravitySection1:AddSlider({
 	Name = "Gravity Slider",
 	Min = 0,
 	Max = 1000,
@@ -739,6 +739,38 @@ GravitySection1Section1:AddSlider({
 		gr = true
 		if gr then
 			game.Workspace.Gravity = Value
+		end
+	end
+})
+
+local FrozenSection1 = OtherTab1:AddSection({
+	Name =	"Frozen"
+})
+
+FrozenSection1:AddToggle({
+	Name = "Frozen",
+	Default = false,
+	Callback = function(status)
+		if status then
+			plr.Character.HumanoidRootPart.Anchored = true
+
+			OrionLib:MakeNotification({
+				Name = "Frozen Message!",
+				Content = "Frozen Enabled",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+
+		elseif status == false then
+			plr.Character.HumanoidRootPart.Anchored = false
+
+			OrionLib:MakeNotification({
+				Name = "Frozen Message!",
+				Content = "Frozen Disabled",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+
 		end
 	end
 })
