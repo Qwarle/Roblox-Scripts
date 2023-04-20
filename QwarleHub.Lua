@@ -683,7 +683,7 @@ local FlySection1 = OtherTab1:AddSection({
 	Name =	"Fly"
 })
 
-BangPlayerSection1:AddButton({
+FlySection1:AddButton({
 	Name = "Fly GUI",
 	Callback = function()
 		
