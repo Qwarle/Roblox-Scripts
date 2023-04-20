@@ -342,6 +342,9 @@ RagdollTab1:AddToggle({
 	Callback = function(db)
 	if db then
 		notif = true
+
+		plr.Character.HumanoidRootPart.CanCollide = false
+
 		local Ragdoll_Push = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Pushed")
 		Ragdoll_Push.Enabled = false
 		local Ragdoll_Start = game:GetService("Players").LocalPlayer.Character:FindFirstChild("StartRagdoll")
@@ -359,6 +362,9 @@ RagdollTab1:AddToggle({
 		})
 
 	elseif db == false then
+
+		plr.Character.HumanoidRootPart.CanCollide = true
+
 		local Ragdoll_Push = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Pushed")
 		Ragdoll_Push.Enabled = true
 		local Ragdoll_Start = game:GetService("Players").LocalPlayer.Character:FindFirstChild("StartRagdoll")
