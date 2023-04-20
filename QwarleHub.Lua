@@ -1,6 +1,6 @@
 --= Version Scripts =--
 
-local GuiVersion = "Version: [Build: 8]"
+local GuiVersion = "Version: [Build: 9]"
 
 local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.0"
 local AntiFling_Script_Version = "(Version: BETA[1.0])"
@@ -711,7 +711,7 @@ local GravitySection1Section1 = OtherTab1:AddSection({
 
 local gr = false
 
-FlySection1:AddButton({
+GravitySection1Section1:AddButton({
 	Name = "Fly GUI",
 	Callback = function(db)
 
@@ -727,10 +727,10 @@ FlySection1:AddButton({
   	end
 })
 
-FlySection1:AddSlider({
+GravitySection1Section1:AddSlider({
 	Name = "Gravity Slider",
 	Min = 0,
-	Max = 20,
+	Max = 1000,
 	Default = 196.2,
 	Color = Color3.fromRGB(0, 38, 255),
 	Increment = 1,
