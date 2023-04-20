@@ -604,7 +604,7 @@ local NoclipSection1 = OtherTab1:AddSection({
 	Name =	"Noclip"
 })
 local noclip = false
-RagdollTab1:AddToggle({
+NoclipSection1:AddToggle({
 	Name = "Noclip",
 	Default = false,
 	Callback = function(db)
