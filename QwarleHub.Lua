@@ -705,6 +705,44 @@ FlySection1:AddButton({
   	end
 })
 
+local GravitySection1Section1 = OtherTab1:AddSection({
+	Name =	"Gravity"
+})
+
+local gr = false
+
+FlySection1:AddButton({
+	Name = "Fly GUI",
+	Callback = function(db)
+
+		gr = false
+
+		OrionLib:MakeNotification({
+			Name = "Gravity Message!",
+			Content = "Gravity Restart",
+			Image = "rbxassetid://4483345998",
+			Time = 5
+		})
+
+  	end
+})
+
+FlySection1:AddSlider({
+	Name = "Gravity Slider",
+	Min = 0,
+	Max = 20,
+	Default = 196.2,
+	Color = Color3.fromRGB(0, 38, 255),
+	Increment = 1,
+	ValueName = "Gravity",
+	Callback = function(Value)
+		gr = true
+		if gr then
+			game.Workspace.Gravity = Value
+		end
+	end
+})
+
 OrionLib:Init()
 
 --= Code End =--
