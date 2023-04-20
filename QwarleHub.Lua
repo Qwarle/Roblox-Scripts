@@ -1,8 +1,9 @@
 --= Version Scripts =--
 
+local GuiVersion = "Version: [Build: 6]"
+
 local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.0"
 local AntiFling_Script_Version = "(Version: BETA[1.0])"
-local GuiVersion = "Version: [Build: 6]"
 local Tp_Player_Version = "Version: 1.0"
 
 local SetWait = 5
