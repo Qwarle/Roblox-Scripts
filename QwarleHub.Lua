@@ -441,7 +441,7 @@ end
 })
 
 local OtherTab1 = Window:MakeTab({
-	Name = "Other Functions",
+	Name = "Misc",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -600,6 +600,46 @@ BangPlayerSection1:AddTextbox({
 	end
 })
 
+local NoclipSection1 = OtherTab1:AddSection({
+	Name =	"Noclip"
+})
+local noclip = false
+RagdollTab1:AddToggle({
+	Name = "Noclip",
+	Default = false,
+	Callback = function(db)
+		if db then
+			if not noclip == false then
+				for a, b in pairs(game.Workspace:GetChildren()) do
+				if b.Name == plr.Name then
+				for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
+				if v:IsA("BasePart") then
+				v.CanCollide = false
+				end end end end
+			end
+
+			OrionLib:MakeNotification({
+				Name = "Noclip Message!",
+				Content = "Noclip Enabled",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+
+	elseif db == false then
+		noclip = false
+
+		if notif then
+			OrionLib:MakeNotification({
+				Name = "Noclip Message!",
+				Content = "Noclip Disabled",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+		end
+
+	end
+end
+})
 OrionLib:Init()
 
 --= Code End =--
