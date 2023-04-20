@@ -70,37 +70,6 @@ local SettingsSection1 = SettingsTab1:AddSection({
 	Name = "Settings GUI"
 })
 
-SettingsSection1:AddBind({
-	Name = "Open/Close Bind",
-	Default = Enum.KeyCode.LeftControl,
-	Hold = false,
-	Callback = function(v)
-		if v then
-			game.CoreGui.Orion.Enabled = false
-
-			OrionLib:MakeNotification({
-				Name = "Gui Message!",
-				Content = "Gui Invisible! Press "..v.." For Visible Gui",
-				Image = "rbxassetid://4483345998",
-				Time = 5
-			})
-
-		elseif v == false then
-			game.CoreGui.Orion.Enabled = true
-
-			if notif then
-				OrionLib:MakeNotification({
-					Name = "Gui Message!",
-					Content = "Gui Visible! Press "..v.." For Invisible Gui",
-					Image = "rbxassetid://4483345998",
-					Time = 5
-				})
-			end
-
-		end
-	end
-})
-
 local SettingsSection2 = SettingsTab1:AddSection({
 	Name = "Destroy GUI"
 })
