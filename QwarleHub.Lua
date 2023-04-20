@@ -771,6 +771,8 @@ FrozenSection1:AddToggle({
 				Time = 5
 			})
 
+		elseif plr.Character.Humanoid.Health == 0 then
+			plr.Character.HumanoidRootPart.Anchored = false
 		end
 	end
 })
