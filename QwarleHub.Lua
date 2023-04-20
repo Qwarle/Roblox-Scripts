@@ -1,6 +1,6 @@
 --= Version Scripts =--
 
-local GuiVersion = "Version: [Build: 7]"
+local GuiVersion = "Version: [Build: 8]"
 
 local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.0"
 local AntiFling_Script_Version = "(Version: BETA[1.0])"
@@ -26,7 +26,6 @@ local plr = game.Players.LocalPlayer
 
 
 --------------------- Info Tab ---------------------
-
 
 
 
@@ -251,6 +250,24 @@ PlayerSection2:AddToggle({
 		end
 	end
 end
+})
+
+PlayerSection2:AddButton({
+	Name = "Korblox R15/R6",
+	Callback = function()
+
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Qwarle/Roblox-Scripts/main/Korblox.Lua"))()
+
+		if notif then
+			OrionLib:MakeNotification({
+				Name = "Korblox R15/R6 Message!",
+				Content = "Korblox R15/R6 Enabled!",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+		end
+
+	end
 })
 
 PlayerSection2:AddButton({
