@@ -6,14 +6,6 @@ local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.0"
 local AntiFling_Script_Version = "(Version: BETA[1.0])"
 local Tp_Player_Version = "Version: 1.0"
 
-local SetWait = 5
-
-local plr = game.Players.LocalPlayer
-
-local defspeed = 16
-local defjump = 50
-local kill = 999999999
-
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Window = OrionLib:MakeWindow({Name = "QwarleHub | "..GuiVersion, HidePremium = true, SaveConfig = true, ConfigFolder = "sbqbeta"})
 
@@ -21,7 +13,22 @@ local Window = OrionLib:MakeWindow({Name = "QwarleHub | "..GuiVersion, HidePremi
 
 local notif = false
 
+local defspeed = 16
+local defjump = 50
+local kill = 999999999
+
+local SetWait = 5
+
+local plr = game.Players.LocalPlayer
+
 --= Code =--
+
+
+
+--------------------- Info Tab ---------------------
+
+
+
 
 OrionLib:MakeNotification({
 	Name = "Hello!",
@@ -45,6 +52,13 @@ local InfoSection2 = InfoTab1:AddSection({
 	Name = "INFO Updates"
 })
 InfoSection2:AddParagraph("Version: Build[2]", "Update: ")
+
+
+
+--------------------- Settings Tab ---------------------
+
+
+
 
 local SettingsTab1 = Window:MakeTab({
 	Name = "Settings GUI",
@@ -91,6 +105,13 @@ SettingsSection2:AddButton({
         OrionLib:Destroy()
   	end
 })
+
+
+
+--------------------- Player Tab ---------------------
+
+
+
 
 local PlayerTab1 = Window:MakeTab({
 	Name = "Player",
@@ -299,6 +320,12 @@ PlayerSection2:AddButton({
 	end
 })
 
+
+
+--------------------- Ragdoll Engine Tab ---------------------
+
+
+
 local RagdollTab1 = Window:MakeTab({
 	Name = "Ragdoll Engine",
 	Icon = "rbxassetid://4483345998",
@@ -439,6 +466,12 @@ RagdollTab1:AddToggle({
 	end
 end
 })
+
+
+
+--------------------- Other Tab ---------------------
+
+
 
 local OtherTab1 = Window:MakeTab({
 	Name = "Misc",
@@ -582,7 +615,7 @@ BangPlayerSection1:AddButton({
 })
 
 BangPlayerSection1:AddTextbox({
-	Name = "Write Nickname Player In Box",
+	Name = "Write Nickname Player In Box:",
 	Default = "",
 	TextDisappear = true,
 	Callback = function(NameBox)
@@ -603,51 +636,67 @@ BangPlayerSection1:AddTextbox({
 local NoclipSection1 = OtherTab1:AddSection({
 	Name =	"Noclip"
 })
-local noclip = false
-local Stepped = game:GetService("RunService")
+
+local Plr = game.Players.LocalPlayer
+local Clipon = false
+local RunService = game:GetService("RunService")
+
 NoclipSection1:AddToggle({
 	Name = "Noclip",
 	Default = false,
-	Callback = function(db)
-		if db then
-			noclip = true
-				Stepped = game:GetService("RunService").Stepped:Connect(function()
-					if not noclip == false then
-						for a, b in pairs(game.Workspace:GetChildren()) do
-							if b.Name == plr.Name then
-								for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
-									if v:IsA("BasePart") then
-										v.CanCollide = false
-									end
-								end
+	Callback = function(status)
+		if status then
+		Clipon = true
+		RunService.Stepped:Connect(function()
+			if Clipon == true then
+				for a, b in pairs(game.Workspace:GetChildren()) do
+                	if b.Name == Plr.Name then
+                		for i, v in pairs(game.Workspace[Plr.Name]:GetChildren()) do
+               				if v:IsA("BasePart") then
+                				v.CanCollide = false
 							end
 						end
-					else
-						Stepped:Disconnect()
 					end
-				end)
-	
-				OrionLib:MakeNotification({
-					Name = "Noclip Message!",
-					Content = "Noclip Enabled",
-					Image = "rbxassetid://4483345998",
-					Time = 5
-				})
+				end
+			else
+				RunService:Disconnect()
+			end
+		end)
+		elseif status == false then
+			Clipon = false
 
-		elseif db == false then
-			noclip = false
-
-			if notif then
-				OrionLib:MakeNotification({
-					Name = "Noclip Message!",
-					Content = "Noclip Disabled",
-					Image = "rbxassetid://4483345998",
-					Time = 5
-				})
+			for a, b in pairs(game.Workspace:GetChildren()) do
+				if b.Name == Plr.Name then
+					for i, v in pairs(game.Workspace[Plr.Name]:GetChildren()) do
+						   if v:IsA("BasePart") then
+							v.CanCollide = true
+						end
+					end
+				end
 			end
 
 		end
-end
+	end
+})
+
+local FlySection1 = OtherTab1:AddSection({
+	Name =	"Fly"
+})
+
+BangPlayerSection1:AddButton({
+	Name = "Fly GUI",
+	Callback = function()
+		
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/Qwarle/Roblox-Scripts/main/Fly%20Gui.Lua'))()
+
+		OrionLib:MakeNotification({
+			Name = "Fly GUI Message!",
+			Content = "Fly GUI Active",
+			Image = "rbxassetid://4483345998",
+			Time = 5
+		})
+
+  	end
 })
 
 OrionLib:Init()
