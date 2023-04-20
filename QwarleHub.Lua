@@ -610,9 +610,9 @@ NoclipSection1:AddToggle({
 	Default = false,
 	Callback = function(db)
 		if db then
-			if not noclip then
+			noclip = true
 				Stepped = game:GetService("RunService").Stepped:Connect(function()
-					if db then
+					if not noclip == false then
 						for a, b in pairs(game.Workspace:GetChildren()) do
 							if b.Name == plr.Name then
 								for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
@@ -633,7 +633,7 @@ NoclipSection1:AddToggle({
 					Image = "rbxassetid://4483345998",
 					Time = 5
 				})
-			end
+
 		elseif db == false then
 			noclip = false
 
