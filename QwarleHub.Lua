@@ -610,48 +610,43 @@ NoclipSection1:AddToggle({
 	Default = false,
 	Callback = function(db)
 		if db then
-			Stepped = game:GetService("RunService").Stepped:Connect(function()
-				if db then
-					for a, b in pairs(game.Workspace:GetChildren()) do
-						if b.Name == plr.Name then
-							for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
-								if v:IsA("BasePart") then
-									v.CanCollide = false
+			if not noclip then
+				Stepped = game:GetService("RunService").Stepped:Connect(function()
+					if db then
+						for a, b in pairs(game.Workspace:GetChildren()) do
+							if b.Name == plr.Name then
+								for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
+									if v:IsA("BasePart") then
+										v.CanCollide = false
+									end
 								end
 							end
 						end
+					else
+						Stepped:Disconnect()
 					end
-				else
-					Stepped:Disconnect()
-				end
-			end)
-
-			OrionLib:MakeNotification({
-				Name = "Noclip Message!",
-				Content = "Noclip Enabled",
-				Image = "rbxassetid://4483345998",
-				Time = 5
-			})
-
-		elseif db == false then
-		db = false
-
-		for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
-			if v:IsA("BasePart") then
-				v.CanCollide = true
+				end)
+	
+				OrionLib:MakeNotification({
+					Name = "Noclip Message!",
+					Content = "Noclip Enabled",
+					Image = "rbxassetid://4483345998",
+					Time = 5
+				})
 			end
-		end
+		elseif db == false then
+			noclip = false
 
-		if notif then
-			OrionLib:MakeNotification({
-				Name = "Noclip Message!",
-				Content = "Noclip Disabled",
-				Image = "rbxassetid://4483345998",
-				Time = 5
-			})
-		end
+			if notif then
+				OrionLib:MakeNotification({
+					Name = "Noclip Message!",
+					Content = "Noclip Disabled",
+					Image = "rbxassetid://4483345998",
+					Time = 5
+				})
+			end
 
-	end
+		end
 end
 })
 
