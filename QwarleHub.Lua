@@ -1,6 +1,6 @@
 --= Version Scripts =--
 
-local GuiVersion = "Version: [Build: 6]"
+local GuiVersion = "Version: [Build: 7]"
 
 local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.0"
 local AntiFling_Script_Version = "(Version: BETA[1.0])"
@@ -71,14 +71,32 @@ local SettingsSection1 = SettingsTab1:AddSection({
 })
 
 SettingsSection1:AddBind({
-	Name = "Open/Close Bind (Not Work)",
+	Name = "Open/Close Bind",
 	Default = Enum.KeyCode.LeftControl,
 	Hold = false,
 	Callback = function(v)
 		if v then
-			OrionLib.Enabled = false
+			game.CoreGui.Orion.Enabled = false
+
+			OrionLib:MakeNotification({
+				Name = "Gui Message!",
+				Content = "Gui Invisible! Press "..v.." For Visible Gui",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+
 		elseif v == false then
-			OrionLib.Enabled = true
+			game.CoreGui.Orion.Enabled = true
+
+			if notif then
+				OrionLib:MakeNotification({
+					Name = "Gui Message!",
+					Content = "Gui Visible! Press "..v.." For Invisible Gui",
+					Image = "rbxassetid://4483345998",
+					Time = 5
+				})
+			end
+
 		end
 	end
 })
@@ -685,9 +703,11 @@ local FlySection1 = OtherTab1:AddSection({
 
 FlySection1:AddButton({
 	Name = "Fly GUI",
-	Callback = function()
-		
-		loadstring(game:HttpGet('https://raw.githubusercontent.com/Qwarle/Roblox-Scripts/main/Fly%20Gui.Lua'))()
+	Callback = function(db)
+		db = true
+		if db then
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/Qwarle/Roblox-Scripts/main/Fly%20Gui.Lua'))()
+		end
 
 		OrionLib:MakeNotification({
 			Name = "Fly GUI Message!",
