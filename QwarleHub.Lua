@@ -1,7 +1,8 @@
 --= Version Scripts =--
 
-local GuiVersion = "Version: [Build: 9]"
+local GuiVersion = "Version: [Build: 11]"
 
+local RTX_Script_Version = "Version: 1.0"
 local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.0"
 local AntiFling_Script_Version = "(Version: BETA[1.0])"
 local Tp_Player_Version = "Version: 1.0"
@@ -473,6 +474,183 @@ end
 
 
 
+--------------------- Graphics Tab ---------------------
+
+
+
+local Lighting = game:GetService("Lighting")
+
+local Bloom = Instance.new("BloomEffect", Lighting)
+local Blur = Instance.new("BlurEffect", Lighting)
+local ColorCor = Instance.new("ColorCorrectionEffect", Lighting)
+local SunRays = Instance.new("SunRaysEffect", Lighting)
+local Sky = Instance.new("Sky", Lighting)
+local Atm = Instance.new("Atmosphere", Lighting)
+
+local GraphicsTab1 = Window:MakeTab({
+	Name = "RTX Shaders",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local GraphicsSection1 = GraphicsTab1:AddSection({
+	Name =	"RTX | "..RTX_Script_Version
+})
+
+GraphicsSection1:AddButton({
+	Name = "RTX Shaders On",
+	Callback = function()
+
+		Bloom.Name = "rtxbloom"
+		Blur.Name = "rtxblur"
+		ColorCor.Name = "rtxcolorcor"
+		SunRays.Name = "rtxsunrays"
+		Sky.Name = "rtxsky"
+		Atm.Name = "rtxatm"
+
+		Bloom.Intensity = 0.85
+		Bloom.Size = 17
+		Bloom.Threshold = 0.8
+
+		Blur.Size = 5
+
+		ColorCor.Brightness = 0.1
+		ColorCor.Contrast = 0.5
+		ColorCor.Saturation = -0.3
+		ColorCor.TintColor = Color3.fromRGB(255, 235, 203)
+
+		SunRays.Intensity = 0.075
+		SunRays.Spread = 0.727
+
+		Sky.SkyboxBk = "http://www.roblox.com/asset/?id=151165214"
+		Sky.SkyboxDn = "http://www.roblox.com/asset/?id=151165197"
+		Sky.SkyboxFt = "http://www.roblox.com/asset/?id=151165224"
+		Sky.SkyboxLf = "http://www.roblox.com/asset/?id=151165191"
+		Sky.SkyboxRt = "http://www.roblox.com/asset/?id=151165206"
+		Sky.SkyboxUp = "http://www.roblox.com/asset/?id=151165227"
+		Sky.SunAngularSize = 10
+
+		Lighting.Ambient = Color3.fromRGB(2,2,2)
+		Lighting.Brightness = 2.25
+		Lighting.ColorShift_Bottom = Color3.fromRGB(0,0,0)
+		Lighting.ColorShift_Top = Color3.fromRGB(0,0,0)
+		Lighting.EnvironmentDiffuseScale = 0.2
+		Lighting.EnvironmentSpecularScale = 0.2
+		Lighting.GlobalShadows = true
+		Lighting.OutdoorAmbient = Color3.fromRGB(0,0,0)
+		Lighting.ShadowSoftness = 0.2
+		Lighting.ClockTime = 17
+		Lighting.GeographicLatitude = 45
+		Lighting.ExposureCompensation = 0.5
+
+		Atm.Density = 0.364
+		Atm.Offset = 0.556
+		Atm.Color = Color3.fromRGB(199, 175, 166)
+		Atm.Decay = Color3.fromRGB(44, 39, 33)
+		Atm.Glare = 0.36
+		Atm.Haze = 1.72
+
+		Bloom.Enabled = true
+		Blur.Enabled = true
+		ColorCor.Enabled = true
+		SunRays.Enabled = true
+		Sky.Enabled = true
+		Atm.Enabled = true
+
+	  end
+})
+
+GraphicsSection1:AddButton({
+	Name = "RTX Shaders Off",
+	Callback = function()
+		local Bloom = Lighting.rtxbloom
+		local Blur = Lighting.rtxblur
+		local ColorCor = Lighting.rtxcolorcor
+		local SunRays = Lighting.rtxsunrays
+		local Sky = Lighting.rtxsky
+		local Atm = Lighting.rtxatm
+		Bloom.Enabled = false
+		Blur.Enabled = false
+		ColorCor.Enabled = false
+		SunRays.Enabled = false
+		Sky.Enabled = false
+		Atm.Enabled = false
+	  end
+})
+
+local GraphicsSection2 = GraphicsTab1:AddSection({
+	Name = "Lighting Settings"
+})
+
+GraphicsSection2:AddSlider({
+	Name = "Time Set",
+	Min = 0,
+	Max = 23,
+	Default = 12,
+	Color = Color3.fromRGB(251, 255, 0),
+	Increment = 0.5,
+	ValueName = "Hours",
+	Callback = function(Value)
+		Lighting.ClockTime = Value
+	end
+})
+
+GraphicsSection2:AddToggle({
+	Name = "Shadows!",
+	Default = true,
+	Callback = function(Value)
+		if Value then
+			Lighting.GlobalShadows = true
+		elseif Value == false then
+			Lighting.GlobalShadows = false
+		end
+	end
+})
+
+local GraphicsSection3 = GraphicsTab1:AddSection({
+	Name = "SunRays Settings"
+})
+
+GraphicsSection3:AddToggle({
+	Name = "SunRays On/Off",
+	Default = true,
+	Callback = function(Value)
+		if Value then
+			SunRays.Enabled = true
+		elseif Value == false then
+			SunRays.Enabled = false
+		end
+	end
+})
+
+GraphicsSection3:AddSlider({
+	Name = "SunRays Spread",
+	Min = 0,
+	Max = 5,
+	Default = 0.25,
+	Color = Color3.fromRGB(0, 255, 8),
+	Increment = 0.01,
+	ValueName = "Spread",
+	Callback = function(Value)
+		SunRays.Spread = Value
+	end
+})
+
+GraphicsSection3:AddSlider({
+	Name = "SunRays Intensity",
+	Min = 0,
+	Max = 5,
+	Default = 0.08,
+	Color = Color3.fromRGB(0, 255, 8),
+	Increment = 0.01,
+	ValueName = "Intensity",
+	Callback = function(Value)
+		SunRays.Intensity = Value
+	end
+})
+
+
+
 --------------------- Other Tab ---------------------
 
 
@@ -725,6 +903,15 @@ GravitySection1:AddButton({
 		})
 
   	end
+})
+
+GravitySection1:AddTextbox({
+	Name = "Set Gravity",
+	Default = "196.2",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Workspace.Gravity = Value
+	end
 })
 
 GravitySection1:AddSlider({
