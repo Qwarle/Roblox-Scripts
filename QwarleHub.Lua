@@ -604,6 +604,7 @@ local NoclipSection1 = OtherTab1:AddSection({
 	Name =	"Noclip"
 })
 local noclip = false
+local Stepped = game:GetService("RunService")
 NoclipSection1:AddToggle({
 	Name = "Noclip",
 	Default = false,
@@ -612,11 +613,14 @@ NoclipSection1:AddToggle({
 			Stepped = game:GetService("RunService").Stepped:Connect(function()
 				if db then
 					for a, b in pairs(game.Workspace:GetChildren()) do
-					if b.Name == plr.Name then
-					for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
-					if v:IsA("BasePart") then
-					v.CanCollide = false
-					end end end end
+						if b.Name == plr.Name then
+							for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
+								if v:IsA("BasePart") then
+									v.CanCollide = false
+								end
+							end
+						end
+					end
 				else
 					Stepped:Disconnect()
 				end
@@ -629,9 +633,14 @@ NoclipSection1:AddToggle({
 				Time = 5
 			})
 
-	else
-		
+		elseif db == false then
 		db = false
+
+		for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
+			if v:IsA("BasePart") then
+				v.CanCollide = true
+			end
+		end
 
 		if notif then
 			OrionLib:MakeNotification({
