@@ -712,7 +712,7 @@ local GravitySection1Section1 = OtherTab1:AddSection({
 local gr = false
 
 GravitySection1Section1:AddButton({
-	Name = "Fly GUI",
+	Name = "Gravity",
 	Callback = function(db)
 
 		gr = false
