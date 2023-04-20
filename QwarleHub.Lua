@@ -609,9 +609,8 @@ NoclipSection1:AddToggle({
 	Default = false,
 	Callback = function(db)
 		if db then
-			noclip = true
 			Stepped = game:GetService("RunService").Stepped:Connect(function()
-				if noclip == true then
+				if db then
 					for a, b in pairs(game.Workspace:GetChildren()) do
 					if b.Name == plr.Name then
 					for i, v in pairs(game.Workspace[plr.Name]:GetChildren()) do
@@ -631,7 +630,7 @@ NoclipSection1:AddToggle({
 			})
 
 	elseif db == false then
-		noclip = false
+		db = false
 
 		if notif then
 			OrionLib:MakeNotification({
@@ -645,6 +644,7 @@ NoclipSection1:AddToggle({
 	end
 end
 })
+
 OrionLib:Init()
 
 --= Code End =--
