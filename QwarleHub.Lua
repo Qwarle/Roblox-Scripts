@@ -1,6 +1,6 @@
 --= Version Scripts =--
 
-local GuiVersion = "Version: [Build: 11]"
+local GuiVersion = "Version: [Build: 12]"
 
 local RTX_Script_Version = "Version: 1.0"
 local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.0"
@@ -588,8 +588,8 @@ GraphicsSection2:AddSlider({
 	Max = 23,
 	Default = 12,
 	Color = Color3.fromRGB(251, 255, 0),
-	Increment = 0.5,
-	ValueName = "Hours",
+	Increment = 0.01,
+	ValueName = "Time",
 	Callback = function(Value)
 		Lighting.ClockTime = Value
 	end
@@ -627,7 +627,7 @@ GraphicsSection3:AddSlider({
 	Name = "SunRays Spread",
 	Min = 0,
 	Max = 5,
-	Default = 0.25,
+	Default = 0,
 	Color = Color3.fromRGB(0, 255, 8),
 	Increment = 0.01,
 	ValueName = "Spread",
@@ -640,12 +640,159 @@ GraphicsSection3:AddSlider({
 	Name = "SunRays Intensity",
 	Min = 0,
 	Max = 5,
-	Default = 0.08,
+	Default = 0,
 	Color = Color3.fromRGB(0, 255, 8),
 	Increment = 0.01,
 	ValueName = "Intensity",
 	Callback = function(Value)
 		SunRays.Intensity = Value
+	end
+})
+
+local GraphicsSection4 = GraphicsTab1:AddSection({
+	Name = "Bloom Settings"
+})
+
+GraphicsSection4:AddToggle({
+	Name = "Bloom On/Off",
+	Default = true,
+	Callback = function(Value)
+		if Value then
+			Bloom.Enabled = true
+		elseif Value == false then
+			Bloom.Enabled = false
+		end
+	end
+})
+
+GraphicsSection4:AddSlider({
+	Name = "Bloom Intensity",
+	Min = 0,
+	Max = 5,
+	Default = 0,
+	Color = Color3.fromRGB(0, 255, 8),
+	Increment = 0.01,
+	ValueName = "Intensity",
+	Callback = function(Value)
+		Bloom.Intensity = Value
+	end
+})
+
+GraphicsSection4:AddSlider({
+	Name = "Bloom Size",
+	Min = 0,
+	Max = 50,
+	Default = 0,
+	Color = Color3.fromRGB(0, 255, 8),
+	Increment = 0.01,
+	ValueName = "Size",
+	Callback = function(Value)
+		Bloom.Size = Value
+	end
+})
+
+GraphicsSection4:AddSlider({
+	Name = "Bloom Threshold",
+	Min = 0,
+	Max = 5,
+	Default = 5,
+	Color = Color3.fromRGB(0, 255, 8),
+	Increment = 0.01,
+	ValueName = "Threshold",
+	Callback = function(Value)
+		Bloom.Threshold = Value
+	end
+})
+
+local GraphicsSection5 = GraphicsTab1:AddSection({
+	Name = "Blur Settings"
+})
+
+GraphicsSection5:AddToggle({
+	Name = "Blur On/Off",
+	Default = true,
+	Callback = function(Value)
+		if Value then
+			Blur.Enabled = true
+		elseif Value == false then
+			Blur.Enabled = false
+		end
+	end
+})
+
+GraphicsSection5:AddSlider({
+	Name = "Blur Size",
+	Min = 0,
+	Max = 50,
+	Default = 5,
+	Color = Color3.fromRGB(0, 255, 8),
+	Increment = 0.01,
+	ValueName = "Size",
+	Callback = function(Value)
+		Blur.Size = Value
+	end
+})
+
+local GraphicsSection6 = GraphicsTab1:AddSection({
+	Name = "Color Corection Settings"
+})
+
+GraphicsSection6:AddToggle({
+	Name = "Color Corection On/Off",
+	Default = true,
+	Callback = function(Value)
+		if Value then
+			ColorCor.Enabled = true
+		elseif Value == false then
+			ColorCor.Enabled = false
+		end
+	end
+})
+
+GraphicsSection6:AddSlider({
+	Name = "Color Corection Brightness",
+	Min = 0,
+	Max = 1,
+	Default = 0,
+	Color = Color3.fromRGB(0, 255, 8),
+	Increment = 0.01,
+	ValueName = "Brightness",
+	Callback = function(Value)
+		ColorCor.Brightness = Value
+	end
+})
+
+GraphicsSection6:AddSlider({
+	Name = "Color Corection Contrast",
+	Min = 0,
+	Max = 5,
+	Default = 0,
+	Color = Color3.fromRGB(0, 255, 8),
+	Increment = 0.01,
+	ValueName = "Contrast",
+	Callback = function(Value)
+		ColorCor.Contrast = Value
+	end
+})
+
+GraphicsSection6:AddSlider({
+	Name = "Color Corection Saturation",
+	Min = 0,
+	Max = 5,
+	Default = 0,
+	Color = Color3.fromRGB(0, 255, 8),
+	Increment = 0.01,
+	ValueName = "Saturation",
+	Callback = function(Value)
+		ColorCor.Saturation = Value
+	end
+})
+
+GraphicsSection6:AddColorpicker({
+	Name = "Color Corection Color",
+	Default = Color3.fromRGB(255, 255, 255),
+	Callback = function(Value)
+		ColorCor.TintColor = Value
 	end
 })
 
@@ -951,12 +1098,14 @@ FrozenSection1:AddToggle({
 		elseif status == false then
 			plr.Character.HumanoidRootPart.Anchored = false
 
-			OrionLib:MakeNotification({
-				Name = "Frozen Message!",
-				Content = "Frozen Disabled",
-				Image = "rbxassetid://4483345998",
-				Time = 5
-			})
+			if notif then
+				OrionLib:MakeNotification({
+					Name = "Frozen Message!",
+					Content = "Frozen Disabled",
+					Image = "rbxassetid://4483345998",
+					Time = 5
+				})
+			end
 
 		elseif plr.Character.Humanoid.Health == 0 then
 			plr.Character.HumanoidRootPart.Anchored = false
