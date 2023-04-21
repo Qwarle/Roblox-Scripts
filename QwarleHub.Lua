@@ -1,9 +1,9 @@
 --= Version Scripts =--
 
-local GuiVersion = "Version: [Build: 12]"
+local GuiVersion = "Version: [Build: 13]"
 
 local RTX_Script_Version = "Version: 1.0"
-local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.0"
+local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.1"
 local AntiFling_Script_Version = "(Version: BETA[1.0])"
 local Tp_Player_Version = "Version: 1.0"
 
@@ -255,9 +255,57 @@ end
 
 PlayerSection2:AddButton({
 	Name = "Korblox R15/R6",
-	Callback = function()
+	Callback = function(Part0,Part1,Position,Angle)
 
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/Qwarle/Roblox-Scripts/main/Korblox.Lua"))()
+		function Align(Part0, Part1, Position, Angle)
+			local AlignPos = Instance.new('AlignPosition', Part1);
+		 AlignPos.Parent.CanCollide = false;
+		 AlignPos.ApplyAtCenterOfMass = true;
+		 AlignPos.MaxForce = 67752;
+		 AlignPos.MaxVelocity = math.huge/9e110;
+		 AlignPos.ReactionForceEnabled = false;
+		 AlignPos.Responsiveness = 200;
+		 AlignPos.RigidityEnabled = false;
+			local AlignOri = Instance.new('AlignOrientation', Part1);
+		 AlignOri.MaxAngularVelocity = math.huge/9e110;
+		 AlignOri.MaxTorque = 67752;
+		 AlignOri.PrimaryAxisOnly = false;
+		 AlignOri.ReactionTorqueEnabled = false;
+		 AlignOri.Responsiveness = 200;
+		 AlignOri.RigidityEnabled = false;
+			local AttachmentA=Instance.new('Attachment',Part1);
+			local AttachmentB=Instance.new('Attachment',Part0);
+		 AttachmentA.Name = "BruhA"
+		 AttachmentB.Name = "BruhB"
+		 AttachmentB.Orientation = Angle
+		 AttachmentB.Position = Position
+		 AlignPos.Attachment0 = AttachmentA;
+		 AlignPos.Attachment1 = AttachmentB;
+		 AlignOri.Attachment0 = AttachmentA;
+		 AlignOri.Attachment1 = AttachmentB;
+		end
+		 
+		local User = game:GetService("Players").LocalPlayer
+		local Body = User.Character
+		local Soul = Body.Humanoid
+		 
+		local FakeLeg = Body.RightUpperLeg:Clone()
+		FakeLeg.Transparency = 1
+		Body.RightUpperLeg:Destroy()
+		FakeLeg.Parent = Body
+		Body.RightUpperLeg.RightUpperLeg:Destroy()
+		 
+		local Korblox = Body["Recolor (For Korblox)"]
+		Korblox.Handle.Massless = true
+		Korblox.Handle:BreakJoints()
+		 
+		Align(FakeLeg,Korblox.Handle,Vector3.new(0,.25,0),Vector3.new(0,0,0))
+		 
+		game:GetService("RunService").Heartbeat:connect(function(t)
+			if Korblox:FindFirstChild("Handle", true) then
+		 Korblox.Handle.Velocity = Vector3.new(0, 30,0)
+			end;
+		end)
 
 		if notif then
 			OrionLib:MakeNotification({
@@ -267,7 +315,6 @@ PlayerSection2:AddButton({
 				Time = 5
 			})
 		end
-
 	end
 })
 
@@ -385,6 +432,14 @@ RagdollTab1:AddToggle({
 		Ragdoll_Me.Enabled = false
 		local Ragdoll_Falling_Down = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Falling down")
 		Ragdoll_Falling_Down.Enabled = false
+		local Ragdoll_2 = game["Workspace"]["Ragdoll 2"]
+		Ragdoll_2.Enabled = false
+		local Ragdoll_1 = game["Workspace"]["Ragdoll 1"]
+		Ragdoll_1.Enabled = false
+		local Ragdoll_Server = game["Workspace"]["Ragdoll 1"]["Ragdoll_Server"]
+		Ragdoll_Server.Enabled = false
+		local Ragdoll_Admin = game:GetService("Workspace")["Ragdoll-Admin"]
+		Ragdoll_Admin.Enabled = false
 
 		OrionLib:MakeNotification({
 			Name = "Anti Ragdoll Message!",
@@ -405,6 +460,14 @@ RagdollTab1:AddToggle({
 		Ragdoll_Me.Enabled = true
 		local Ragdoll_Falling_Down = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Falling down")
 		Ragdoll_Falling_Down.Enabled = true
+		local Ragdoll_2 = game["Workspace"]["Ragdoll 2"]
+		Ragdoll_2.Enabled = true
+		local Ragdoll_1 = game["Workspace"]["Ragdoll 1"]
+		Ragdoll_1.Enabled = true
+		local Ragdoll_Server = game["Workspace"]["Ragdoll 1"]["Ragdoll_Server"]
+		Ragdoll_Server.Enabled = true
+		local Ragdoll_Admin = game:GetService("Workspace")["Ragdoll-Admin"]
+		Ragdoll_Admin.Enabled = true
 
 		if notif then
 			OrionLib:MakeNotification({
@@ -415,8 +478,6 @@ RagdollTab1:AddToggle({
 			})
 		end
 
-	elseif plr.Character.Humanoid.Health == 0 then
-		db = false
 	end
 end
 })
@@ -430,11 +491,6 @@ RagdollTab1:AddToggle({
 	Default = false,
 	Callback = function(db)
 	if db then
-		for i, v in pairs(game.Workspace:GetDescendants()) do
-			if string.find(v.Name, "Ragdoll") then
-				v:Destroy()
-			end
-		end
 
 		OrionLib:MakeNotification({
 			Name = "Push Aura Message!",
@@ -485,7 +541,6 @@ local Blur = Instance.new("BlurEffect", Lighting)
 local ColorCor = Instance.new("ColorCorrectionEffect", Lighting)
 local SunRays = Instance.new("SunRaysEffect", Lighting)
 local Sky = Instance.new("Sky", Lighting)
-local Atm = Instance.new("Atmosphere", Lighting)
 
 local GraphicsTab1 = Window:MakeTab({
 	Name = "RTX Shaders",
@@ -506,7 +561,6 @@ GraphicsSection1:AddButton({
 		ColorCor.Name = "rtxcolorcor"
 		SunRays.Name = "rtxsunrays"
 		Sky.Name = "rtxsky"
-		Atm.Name = "rtxatm"
 
 		Bloom.Intensity = 0.85
 		Bloom.Size = 17
@@ -543,19 +597,11 @@ GraphicsSection1:AddButton({
 		Lighting.GeographicLatitude = 45
 		Lighting.ExposureCompensation = 0.5
 
-		Atm.Density = 0.364
-		Atm.Offset = 0.556
-		Atm.Color = Color3.fromRGB(199, 175, 166)
-		Atm.Decay = Color3.fromRGB(44, 39, 33)
-		Atm.Glare = 0.36
-		Atm.Haze = 1.72
-
 		Bloom.Enabled = true
 		Blur.Enabled = true
 		ColorCor.Enabled = true
 		SunRays.Enabled = true
 		Sky.Enabled = true
-		Atm.Enabled = true
 
 	  end
 })
@@ -597,7 +643,7 @@ GraphicsSection2:AddSlider({
 
 GraphicsSection2:AddToggle({
 	Name = "Shadows!",
-	Default = true,
+	Default = false,
 	Callback = function(Value)
 		if Value then
 			Lighting.GlobalShadows = true
@@ -613,7 +659,7 @@ local GraphicsSection3 = GraphicsTab1:AddSection({
 
 GraphicsSection3:AddToggle({
 	Name = "SunRays On/Off",
-	Default = true,
+	Default = false,
 	Callback = function(Value)
 		if Value then
 			SunRays.Enabled = true
@@ -655,7 +701,7 @@ local GraphicsSection4 = GraphicsTab1:AddSection({
 
 GraphicsSection4:AddToggle({
 	Name = "Bloom On/Off",
-	Default = true,
+	Default = false,
 	Callback = function(Value)
 		if Value then
 			Bloom.Enabled = true
@@ -710,7 +756,7 @@ local GraphicsSection5 = GraphicsTab1:AddSection({
 
 GraphicsSection5:AddToggle({
 	Name = "Blur On/Off",
-	Default = true,
+	Default = false,
 	Callback = function(Value)
 		if Value then
 			Blur.Enabled = true
@@ -739,7 +785,7 @@ local GraphicsSection6 = GraphicsTab1:AddSection({
 
 GraphicsSection6:AddToggle({
 	Name = "Color Corection On/Off",
-	Default = true,
+	Default = false,
 	Callback = function(Value)
 		if Value then
 			ColorCor.Enabled = true
