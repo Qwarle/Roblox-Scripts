@@ -1,10 +1,10 @@
 --= Version Scripts =--
 
-local GuiVersion = "Version: [Build: 13]"
+local GuiVersion = "Version: [Build: 16]"
 
 local RTX_Script_Version = "Version: 1.0"
 local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.1"
-local AntiFling_Script_Version = "(Version: BETA[1.0])"
+local AntiFling_Script_Version = "Version: 1.1"
 local Tp_Player_Version = "Version: 1.0"
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
@@ -857,94 +857,120 @@ local OtherTab1 = Window:MakeTab({
 local AntiFlingSection = OtherTab1:AddSection({
 	Name =	"AntiFling "..AntiFling_Script_Version
 })
-
-OtherTab1:AddButton({
+local Fling = false
+OtherTab1:AddToggle({
 	Name = "AntiFling Function",
-	Callback = function()
+	Default = false,
+	Callback = function(db)
+		if db then
+			Fling = true
+			OrionLib:MakeNotification({
+				Name = "AntiFling Message",
+				Content = "Enabled AntiFling!",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
 
-        OrionLib:MakeNotification({
-            Name = "AntiFling Message",
-            Content = "Enabled AntiFling!",
-            Image = "rbxassetid://4483345998",
-            Time = 5
-        })
+			local flingfreeze = false
 
 		local Services = setmetatable({}, {__index = function(Self, Index)
 			local NewService = game.GetService(game, Index)
 			if NewService then
-			Self[Index] = NewService
+				Self[Index] = NewService
 			end
 			return NewService
-			end})
-			local LocalPlayer = Services.Players.LocalPlayer
-			local function PlayerAdded(Player)
-			   local Detected = false
-			   local Character;
-			   local PrimaryPart;
-			   local function CharacterAdded(NewCharacter)
-				   Character = NewCharacter
-				   repeat
-					   task.wait()
-					   PrimaryPart = NewCharacter:FindFirstChild("HumanoidRootPart")
-				   until PrimaryPart
-				   Detected = false
-			   end
-			   CharacterAdded(Player.Character or Player.CharacterAdded:Wait())
-			   Player.CharacterAdded:Connect(CharacterAdded)
-			   Services.RunService.Heartbeat:Connect(function()
-				   if (Character and Character:IsDescendantOf(workspace)) and (PrimaryPart and PrimaryPart:IsDescendantOf(Character)) then
-					   if PrimaryPart.AssemblyAngularVelocity.Magnitude > 50 or PrimaryPart.AssemblyLinearVelocity.Magnitude > 100 then
-						   if Detected == false then
+		end})
+		local LocalPlayer = Services.Players.LocalPlayer
+		local function PlayerAdded(Player)
+			local Detected = false
+			local Character;
+			local PrimaryPart;
+			local function CharacterAdded(NewCharacter)
+				Character = NewCharacter
+				repeat
+					task.wait()
+					PrimaryPart = NewCharacter:FindFirstChild("HumanoidRootPart")
+				until PrimaryPart
+				Detected = false
+			end
+			CharacterAdded(Player.Character or Player.CharacterAdded:Wait())
+			Player.CharacterAdded:Connect(CharacterAdded)
+			Services.RunService.Heartbeat:Connect(function()
+				if (Character and Character:IsDescendantOf(workspace)) and (PrimaryPart and PrimaryPart:IsDescendantOf(Character)) then
+					if PrimaryPart.AssemblyAngularVelocity.Magnitude > 50 or PrimaryPart.AssemblyLinearVelocity.Magnitude > 100 then
+						if Detected == false then
+							
+						end
+						Detected = true
+						for i,v in ipairs(Character:GetDescendants()) do
+							if v:IsA("BasePart") then
+								v.CanCollide = false
+								v.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+								v.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+								v.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
+							end
+						end
+						PrimaryPart.CanCollide = false
+						PrimaryPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+						PrimaryPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+						PrimaryPart.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
+					end
+				end
+			end)
+		end
+		for i,v in ipairs(Services.Players:GetPlayers()) do
+			if v ~= LocalPlayer then
+				PlayerAdded(v)
+			end
+		end
+		Services.Players.PlayerAdded:Connect(PlayerAdded)
+		local LastPosition = Vector3.new(0, 4, 0)
+		Services.RunService.Heartbeat:Connect(function()
+			pcall(function()
+				local PrimaryPart = LocalPlayer.Character.PrimaryPart
+				if Fling == true then
+					if flingfreeze == true then
+						if PrimaryPart.AssemblyLinearVelocity.Magnitude > 250 or PrimaryPart.AssemblyAngularVelocity.Magnitude > 250 then
+							PrimaryPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+							PrimaryPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+							PrimaryPart.CFrame = LastPosition
+
+							plr.Character.HumanoidRootPart.Anchored = true
+							flingfreeze = false
+
 							OrionLib:MakeNotification({
-								Name = "Fling Detected!",
-								Content = "the player was flingout :"..Player,
+								Name = "AntiFling Message!",
+								Content = "Fling Detected! You Freeze!",
 								Image = "rbxassetid://4483345998",
 								Time = 5
 							})
-						   end
-						   Detected = true
-						   for i,v in ipairs(Character:GetDescendants()) do
-							   if v:IsA("BasePart") then
-								   v.CanCollide = false
-								   v.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-								   v.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-								   v.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
-							   end
-						   end
-						   PrimaryPart.CanCollide = false
-						   PrimaryPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-						   PrimaryPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-						   PrimaryPart.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
-					   end
-				   end
-			   end)
-			end
-			for i,v in ipairs(Services.Players:GetPlayers()) do
-			   if v ~= LocalPlayer then
-				   PlayerAdded(v)
-			   end
-			end
-			Services.Players.PlayerAdded:Connect(PlayerAdded)
-			local LastPosition = nil
-			Services.RunService.Heartbeat:Connect(function()
-			   pcall(function()
-				   local PrimaryPart = LocalPlayer.Character.PrimaryPart
-				   if PrimaryPart.AssemblyLinearVelocity.Magnitude > 250 or PrimaryPart.AssemblyAngularVelocity.Magnitude > 250 then
-					   PrimaryPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-					   PrimaryPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-					   PrimaryPart.CFrame = LastPosition
-					   OrionLib:MakeNotification({
-						Name = "Fling Detected!",
-						Content = "They tried to fling you.",
-						Image = "rbxassetid://4483345998",
-						Time = 5
-					})
-				   elseif PrimaryPart.AssemblyLinearVelocity.Magnitude < 50 or PrimaryPart.AssemblyAngularVelocity.Magnitude > 50 then
-					   LastPosition = PrimaryPart.CFrame
-				   end
-			   end)
+
+						end
+					elseif flingfreeze == false then
+						if PrimaryPart.AssemblyLinearVelocity.Magnitude < 50 or PrimaryPart.AssemblyAngularVelocity.Magnitude > 50 then
+							LastPosition = PrimaryPart.CFrame
+							task.wait(1)
+							flingfreeze = true
+							plr.Character.HumanoidRootPart.Anchored = false
+						end
+					end
+				end
 			end)
-  	end
+		end)
+		elseif db == false then
+			Fling = false
+
+			if notif then
+				OrionLib:MakeNotification({
+					Name = "AntiFling Message",
+					Content = "Disabled AntiFling!",
+					Image = "rbxassetid://4483345998",
+					Time = 5
+				})
+			end
+
+		end
+	end
 })
 
 local TpPlayerSection1 = OtherTab1:AddSection({
@@ -1128,15 +1154,15 @@ local FrozenSection1 = OtherTab1:AddSection({
 })
 
 FrozenSection1:AddToggle({
-	Name = "Frozen",
+	Name = "Freeze Character",
 	Default = false,
 	Callback = function(status)
 		if status then
 			plr.Character.HumanoidRootPart.Anchored = true
 
 			OrionLib:MakeNotification({
-				Name = "Frozen Message!",
-				Content = "Frozen Enabled",
+				Name = "Freeze Message!",
+				Content = "Freeze Enabled",
 				Image = "rbxassetid://4483345998",
 				Time = 5
 			})
@@ -1146,8 +1172,8 @@ FrozenSection1:AddToggle({
 
 			if notif then
 				OrionLib:MakeNotification({
-					Name = "Frozen Message!",
-					Content = "Frozen Disabled",
+					Name = "Freeze Message!",
+					Content = "Freeze Disabled",
 					Image = "rbxassetid://4483345998",
 					Time = 5
 				})
