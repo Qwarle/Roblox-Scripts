@@ -1,14 +1,21 @@
 --= Version Scripts =--
 
-local GuiVersion = "Version: [Build: 16]"
+local GuiVersion = "Version: [Build: 17]"
 
 local RTX_Script_Version = "Version: 1.0"
+
 local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.1"
+
 local AntiFling_Script_Version = "Version: 1.1"
-local Tp_Player_Version = "Version: 1.0"
+
+local Tp_Player_Script_Version = "Version: 1.0"
+
+local Spin_Script_Version = "Version: 1.0"
+
+local Fling_Script_Version = "Soon..."
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local Window = OrionLib:MakeWindow({Name = "QwarleHub | "..GuiVersion, HidePremium = true, SaveConfig = true, ConfigFolder = "sbqbeta"})
+local Window = OrionLib:MakeWindow({Name = "Funny Hub | "..GuiVersion, HidePremium = true, SaveConfig = true, ConfigFolder = "sbqbeta"})
 
 --= Other Locals =--
 
@@ -844,21 +851,23 @@ GraphicsSection6:AddColorpicker({
 
 
 
---------------------- Other Tab ---------------------
+--------------------- Fling And Spin Tab ---------------------
 
 
 
-local OtherTab1 = Window:MakeTab({
-	Name = "Misc",
+local FlingAndSpinTab1 = Window:MakeTab({
+	Name = "Fling and Spin",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
-local AntiFlingSection = OtherTab1:AddSection({
+local AntiFlingSection = FlingAndSpinTab1:AddSection({
 	Name =	"AntiFling "..AntiFling_Script_Version
 })
+
 local Fling = false
-OtherTab1:AddToggle({
+
+AntiFlingSection:AddToggle({
 	Name = "AntiFling Function",
 	Default = false,
 	Callback = function(db)
@@ -973,8 +982,68 @@ OtherTab1:AddToggle({
 	end
 })
 
+local SpinSection1 = FlingAndSpinTab1:AddSection({
+	Name =	"Spin "..Spin_Script_Version
+})
+local spinfunc = false
+local SpeedSpin
+SpinSection1:AddToggle({
+	Name = "Spin Toggle",
+	Default = false,
+	Callback = function(Value)
+		if Value then
+			spinfunc = true
+			game.Players.LocalPlayer.Character.Head.CanCollide = false
+			game.Players.LocalPlayer.Character.UpperTorso.CanCollide = false
+			game.Players.LocalPlayer.Character.LowerTorso.CanCollide = false
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = false
+		elseif Value == false then
+			spinfunc = false
+			game.Players.LocalPlayer.Character.Head.CanCollide = true
+			game.Players.LocalPlayer.Character.UpperTorso.CanCollide = true
+			game.Players.LocalPlayer.Character.LowerTorso.CanCollide = true
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+			SpeedSpin = 0
+		end
+	end
+})
+
+SpinSection1:AddSlider({
+	Name = "Spin Speed",
+	Min = 0,
+	Max = 500,
+	Default = 0,
+	Color = Color3.fromRGB(255, 255, 255),
+	Increment = 0.1,
+	ValueName = "Speed",
+	Callback = function(Speed)
+		if spinfunc == true then
+			SpeedSpin = Speed
+			local bt = Instance.new("BodyThrust", game.Players.LocalPlayer.Character.HumanoidRootPart)
+			bt.Force = Vector3.new(SpeedSpin,0,SpeedSpin)
+			bt.Location = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+		end
+	end
+})
+
+local FlingSection1 = FlingAndSpinTab1:AddSection({
+	Name =	"Fling "..Fling_Script_Version
+})
+
+
+
+--------------------- Other Tab ---------------------
+
+
+
+local OtherTab1 = Window:MakeTab({
+	Name = "Misc",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local TpPlayerSection1 = OtherTab1:AddSection({
-	Name =	"Tp Player "..Tp_Player_Version
+	Name =	"Tp Player "..Tp_Player_Script_Version
 })
 
 TpPlayerSection1:AddTextbox({
