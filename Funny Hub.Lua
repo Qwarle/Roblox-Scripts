@@ -1,12 +1,10 @@
 --= Version Scripts =--
 
-local GuiVersion = "Version: [Build: 17]"
+local GuiVersion = "Version: [Build: 18]"
 
 local RTX_Script_Version = "Version: 1.0"
 
-local Ragdoll_Script_Version = "Ragdoll Engine Hack | Version: 1.1"
-
-local AntiFling_Script_Version = "Version: 1.1"
+local AntiFling_Script_Version = "Version: 1.0"
 
 local Tp_Player_Script_Version = "Version: 1.0"
 
@@ -14,7 +12,10 @@ local Spin_Script_Version = "Version: 1.0"
 
 local Fling_Script_Version = "Soon..."
 
+--= Libs =--
+
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
 local Window = OrionLib:MakeWindow({Name = "Funny Hub | "..GuiVersion, HidePremium = true, SaveConfig = true, ConfigFolder = "sbqbeta"})
 
 --= Other Locals =--
@@ -23,11 +24,14 @@ local notif = false
 
 local defspeed = 16
 local defjump = 50
-local kill = 999999999
 
 local SetWait = 5
 
 local plr = game.Players.LocalPlayer
+
+--= Test =--
+
+local Test = false
 
 --= Code =--
 
@@ -91,9 +95,11 @@ SettingsSection2:AddButton({
             Image = "rbxassetid://4483345998",
             Time = SetWait
         })
-		game.Players.LocalPlayer.Character.Humanoid.Health -= kill
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = defspeed
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = defjump
+
+		plr.Character.Humanoid.Health -= 999999
+		plr.Character.Humanoid.WalkSpeed = defspeed
+		plr.Character.Humanoid.JumpPower = defjump
+
         task.wait(SetWait)
 
         OrionLib:Destroy()
@@ -163,6 +169,7 @@ PlayerSection1:AddSlider({
 PlayerSection1:AddButton({
 	Name = "Default Speed",
 	Callback = function()
+
 		  game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
 
 		  OrionLib:MakeNotification({
@@ -232,36 +239,58 @@ local PlayerSection2 = PlayerTab1:AddSection({
 })
 
 PlayerSection2:AddToggle({
-	Name = "Godmode!",
+	Name = "Godmode",
 	Default = false,
 	Callback = function(db)
 	if db then
+
 		notif = true
-		while db do
-			task.wait(0.01)
-			game.Players.LocalPlayer.Character.Humanoid.Health += 99999
-		end
+		local hum = plr.Character.Humanoid
+		hum.MaxHealth = 999999
+		hum.Health = hum.MaxHealth / 2
+
+		hum.HealthChanged:connect(function()
+			if hum.Health < 10 then
+				hum.Health = hum.MaxHealth
+			end
+		end)
+
 		OrionLib:MakeNotification({
-			Name = "Godmode!",
+			Name = "Godmode Message",
 			Content = "Godmode Enabled!",
 			Image = "rbxassetid://4483345998",
 			Time = 5
 		})
+
 	elseif db == false then
+
+		local hum = plr.Character.Humanoid
+
+		hum.MaxHealth = 100
+		
+		hum.HealthChanged:connect(function()
+
+			if hum.Health < 10 then
+				hum.Health = hum.MaxHealth
+			end
+
+		end)
+
 		if notif then
 			OrionLib:MakeNotification({
-				Name = "Godmode!",
+				Name = "Godmode Message",
 				Content = "Godmode Disabled!",
 				Image = "rbxassetid://4483345998",
 				Time = 5
 			})
 		end
+
 	end
 end
 })
 
 PlayerSection2:AddButton({
-	Name = "Korblox R15/R6",
+	Name = "Korblox R15",
 	Callback = function(Part0,Part1,Position,Angle)
 
 		function Align(Part0, Part1, Position, Angle)
@@ -377,162 +406,6 @@ PlayerSection2:AddButton({
 		})
 
 	end
-})
-
-
-
---------------------- Ragdoll Engine Tab ---------------------
-
-
-
-local RagdollTab1 = Window:MakeTab({
-	Name = "Ragdoll Engine",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
-
-local TpSection1 = RagdollTab1:AddSection({
-	Name = Ragdoll_Script_Version
-})
-
-RagdollTab1:AddDropdown({
-	Name = "Teleports",
-	Default = "Non",
-	Options = {"Tp Roof Build", "Tp Floor 1", "Tp Center", "Tp Baloon", "Tp Escalators", "Tp Dumpster", "Tp Pool", "Tp Conveyer", "Tp Cannon 1"},
-	Callback = function(Value)
-		if Value == "Tp Roof Build" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.DivingBoard.Diving.CFrame * CFrame.new(0, 4, 0)
-		elseif Value == "Tp Floor 1" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.Building.Base.CFrame * CFrame.new(0, 4, 0)
-		elseif Value == "Tp Center" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Base.ServerInfo.Information.CFrame * CFrame.new(0, 4, 0)
-		elseif Value == "Tp Baloon" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.BalloonStation.BalloonStation.CFrame * CFrame.new(0, 4, 0)
-		elseif Value == "Tp Escalators" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.Escalators.Floor.CFrame * CFrame.new(0, 4, 0)
-		elseif Value == "Tp Dumpster" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.Dumpster.Base.CFrame * CFrame.new(0, 4, 0)
-		elseif Value == "Tp Pool" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.Pool.Floor.CFrame * CFrame.new(0, 4, 0)
-		elseif Value == "Tp Conveyer" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles["Movewalks/Travellator"].Model.Part.CFrame * CFrame.new(0, 4, 0)
-		elseif Value == "Tp Cannon 1" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Cannons.Cannon.Model.CannonSupport.CFrame * CFrame.new(0, 4, 0)
-		end
-	end
-})
-
-RagdollTab1:AddToggle({
-	Name = "Anti Ragdoll", -- version 1.0 beta
-	Default = false,
-	Callback = function(db)
-	if db then
-		notif = true
-
-		plr.Character.HumanoidRootPart.CanCollide = false
-
-		local Ragdoll_Push = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Pushed")
-		Ragdoll_Push.Enabled = false
-		local Ragdoll_Start = game:GetService("Players").LocalPlayer.Character:FindFirstChild("StartRagdoll")
-		Ragdoll_Start.Enabled = false
-		local Ragdoll_Me = game:GetService("Players").LocalPlayer.Character:FindFirstChild("RagdollMe")
-		Ragdoll_Me.Enabled = false
-		local Ragdoll_Falling_Down = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Falling down")
-		Ragdoll_Falling_Down.Enabled = false
-		local Ragdoll_2 = game["Workspace"]["Ragdoll 2"]
-		Ragdoll_2.Enabled = false
-		local Ragdoll_1 = game["Workspace"]["Ragdoll 1"]
-		Ragdoll_1.Enabled = false
-		local Ragdoll_Server = game["Workspace"]["Ragdoll 1"]["Ragdoll_Server"]
-		Ragdoll_Server.Enabled = false
-		local Ragdoll_Admin = game:GetService("Workspace")["Ragdoll-Admin"]
-		Ragdoll_Admin.Enabled = false
-
-		OrionLib:MakeNotification({
-			Name = "Anti Ragdoll Message!",
-			Content = "Anti Ragdoll Enabled!",
-			Image = "rbxassetid://4483345998",
-			Time = 5
-		})
-
-	elseif db == false then
-
-		plr.Character.HumanoidRootPart.CanCollide = true
-
-		local Ragdoll_Push = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Pushed")
-		Ragdoll_Push.Enabled = true
-		local Ragdoll_Start = game:GetService("Players").LocalPlayer.Character:FindFirstChild("StartRagdoll")
-		Ragdoll_Start.Enabled = true
-		local Ragdoll_Me = game:GetService("Players").LocalPlayer.Character:FindFirstChild("RagdollMe")
-		Ragdoll_Me.Enabled = true
-		local Ragdoll_Falling_Down = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Falling down")
-		Ragdoll_Falling_Down.Enabled = true
-		local Ragdoll_2 = game["Workspace"]["Ragdoll 2"]
-		Ragdoll_2.Enabled = true
-		local Ragdoll_1 = game["Workspace"]["Ragdoll 1"]
-		Ragdoll_1.Enabled = true
-		local Ragdoll_Server = game["Workspace"]["Ragdoll 1"]["Ragdoll_Server"]
-		Ragdoll_Server.Enabled = true
-		local Ragdoll_Admin = game:GetService("Workspace")["Ragdoll-Admin"]
-		Ragdoll_Admin.Enabled = true
-
-		if notif then
-			OrionLib:MakeNotification({
-				Name = "Anti Ragdoll Message!",
-				Content = "Anti Ragdoll Disabled!",
-				Image = "rbxassetid://4483345998",
-				Time = 5
-			})
-		end
-
-	end
-end
-})
-
-local PushSection = RagdollTab1:AddSection({
-	Name = "Push Functions"
-})
-
-RagdollTab1:AddToggle({
-	Name = "Push Aura",
-	Default = false,
-	Callback = function(db)
-	if db then
-
-		OrionLib:MakeNotification({
-			Name = "Push Aura Message!",
-			Content = "Push Aura Enabled!",
-			Image = "rbxassetid://4483345998",
-			Time = 5
-		})
-
-		while db do
-			task.wait(0.1)
-			pcall(function()
-				for _, player in pairs(game.Players:GetPlayers()) do
-					if player ~= game.Players.LocalPlayer then
-						local args = {
-							[1] = game:GetService("Players")[player.Name].Character
-						}
-						game:GetService("Players").LocalPlayer.Character.Push.PushTool:FireServer(unpack(args))
-					end
-				end
-			end)
-		end
-		elseif db == false then
-		db = false
-
-		if notif then
-			OrionLib:MakeNotification({
-				Name = "Push Aura Message!",
-				Content = "Push Aura Disabled!",
-				Image = "rbxassetid://4483345998",
-				Time = 5
-			})
-		end
-
-	end
-end
 })
 
 
@@ -979,6 +852,7 @@ AntiFlingSection:AddToggle({
 			end
 
 		end
+
 	end
 })
 
@@ -1058,6 +932,27 @@ TpPlayerSection1:AddTextbox({
 	end
 })
 
+local Players = {}
+
+
+for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+	if v:IsA"Model" and game.Players:FindFirstChild(v.Name) then
+		table.insert(Players, (tostring(v.Name)))
+	end
+end
+
+
+TpPlayerSection1:AddDropdown({
+	Name = "Select Player",
+	Default = "",
+	Options = Players,
+	Callback = function(selected)
+		getgenv().selectedPlayer = selected
+
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(getgenv().selectedPlayer).Character:WaitForChild("HumanoidRootPart").CFrame
+	end
+})
+
 TpPlayerSection1:AddBind({
 	Name = "Tp Bind",
 	Default = Enum.KeyCode.Q,
@@ -1072,13 +967,13 @@ TpPlayerSection1:AddBind({
 })
 
 local BangPlayerSection1 = OtherTab1:AddSection({
-	Name =	"Bang Player"
+	Name =	"Follow Player"
 })
 
 local banpl = false
 
 BangPlayerSection1:AddButton({
-	Name = "Disable Bang!",
+	Name = "Stop Follow",
 	Callback = function()
 		banpl = false
   	end
@@ -1219,7 +1114,7 @@ GravitySection1:AddSlider({
 })
 
 local FrozenSection1 = OtherTab1:AddSection({
-	Name =	"Frozen"
+	Name =	"Freeze"
 })
 
 FrozenSection1:AddToggle({
@@ -1248,7 +1143,7 @@ FrozenSection1:AddToggle({
 				})
 			end
 
-		elseif plr.Character.Humanoid.Health == 0 then
+		elseif plr.Character.Humanoid.Health <= 1 or plr.Character.Humanoid.Health == 0 then
 			plr.Character.HumanoidRootPart.Anchored = false
 		end
 	end
