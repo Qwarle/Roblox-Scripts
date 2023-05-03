@@ -1,6 +1,6 @@
 --= Version Scripts =--
 
-local GuiVersion = "Version: [Build: 18]"
+local GuiVersion = "Version: [Build: 20]"
 
 local RTX_Script_Version = "Version: 1.0"
 
@@ -9,6 +9,8 @@ local AntiFling_Script_Version = "Version: 1.0"
 local Tp_Player_Script_Version = "Version: 1.0"
 
 local Spin_Script_Version = "Version: 1.0"
+
+local Ragdoll_Script_Version = "Ragdoll Engine | Version: 1.0"
 
 local Fling_Script_Version = "Soon..."
 
@@ -238,7 +240,7 @@ local PlayerSection2 = PlayerTab1:AddSection({
 	Name = "Other Player Settings"
 })
 
-PlayerSection2:AddToggle({
+--[[PlayerSection2:AddToggle({
 	Name = "Godmode",
 	Default = false,
 	Callback = function(db)
@@ -287,7 +289,7 @@ PlayerSection2:AddToggle({
 
 	end
 end
-})
+})]]
 
 PlayerSection2:AddButton({
 	Name = "Korblox R15",
@@ -1147,6 +1149,184 @@ FrozenSection1:AddToggle({
 			plr.Character.HumanoidRootPart.Anchored = false
 		end
 	end
+})
+
+OrionLib:MakeNotification({
+	Name = "Hello!",
+	Content = "Thanks for using my script! Kisses, QwarleDev ;)",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+
+local RagdollTab1 = Window:MakeTab({
+    Name = "Ragdoll Engine",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+local TpSection1 = RagdollTab1:AddSection({
+    Name = Ragdoll_Script_Version
+})
+
+RagdollTab1:AddDropdown({
+    Name = "Teleports",
+    Default = "Non",
+    Options = {"Tp Roof Build", "Tp Floor 1", "Tp Center", "Tp Baloon", "Tp Escalators", "Tp Dumpster", "Tp Pool", "Tp Conveyer", "Tp Cannon 1"},
+    Callback = function(Value)
+        if Value == "Tp Roof Build" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.DivingBoard.Diving.CFrame * CFrame.new(0, 4, 0)
+        elseif Value == "Tp Floor 1" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.Building.Base.CFrame * CFrame.new(0, 4, 0)
+        elseif Value == "Tp Center" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Base.ServerInfo.Information.CFrame * CFrame.new(0, 4, 0)
+        elseif Value == "Tp Baloon" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.BalloonStation.BalloonStation.CFrame * CFrame.new(0, 4, 0)
+        elseif Value == "Tp Escalators" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.Escalators.Floor.CFrame * CFrame.new(0, 4, 0)
+        elseif Value == "Tp Dumpster" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.Dumpster.Base.CFrame * CFrame.new(0, 4, 0)
+        elseif Value == "Tp Pool" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles.Pool.Floor.CFrame * CFrame.new(0, 4, 0)
+        elseif Value == "Tp Conveyer" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").NewerMap.Obstacles["Movewalks/Travellator"].Model.Part.CFrame * CFrame.new(0, 4, 0)
+        elseif Value == "Tp Cannon 1" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Cannons.Cannon.Model.CannonSupport.CFrame * CFrame.new(0, 4, 0)
+        end
+    end
+})
+
+RagdollTab1:AddToggle({
+    Name = "Anti Ragdoll", -- version 1.0 beta
+    Default = false,
+    Callback = function(db)
+    if db then
+        notif = true
+
+        plr.Character.HumanoidRootPart.CanCollide = false
+
+        local Ragdoll_Push = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Pushed")
+        Ragdoll_Push.Enabled = false
+        local Ragdoll_Start = game:GetService("Players").LocalPlayer.Character:FindFirstChild("StartRagdoll")
+        Ragdoll_Start.Enabled = false
+        local Ragdoll_Me = game:GetService("Players").LocalPlayer.Character:FindFirstChild("RagdollMe")
+        Ragdoll_Me.Enabled = false
+        local Ragdoll_Falling_Down = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Falling down")
+        Ragdoll_Falling_Down.Enabled = false
+        local Ragdoll_2 = game["Workspace"]["Ragdoll 2"]
+        Ragdoll_2.Enabled = false
+        local Ragdoll_1 = game["Workspace"]["Ragdoll 1"]
+        Ragdoll_1.Enabled = false
+        local Ragdoll_Server = game["Workspace"]["Ragdoll 1"]["Ragdoll_Server"]
+        Ragdoll_Server.Enabled = false
+        local Ragdoll_Admin = game:GetService("Workspace")["Ragdoll-Admin"]
+        Ragdoll_Admin.Enabled = false
+
+        OrionLib:MakeNotification({
+            Name = "Anti Ragdoll Message!",
+            Content = "Anti Ragdoll Enabled!",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+
+    elseif db == false then
+
+        plr.Character.HumanoidRootPart.CanCollide = true
+
+        local Ragdoll_Push = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Pushed")
+        Ragdoll_Push.Enabled = true
+        local Ragdoll_Start = game:GetService("Players").LocalPlayer.Character:FindFirstChild("StartRagdoll")
+        Ragdoll_Start.Enabled = true
+        local Ragdoll_Me = game:GetService("Players").LocalPlayer.Character:FindFirstChild("RagdollMe")
+        Ragdoll_Me.Enabled = true
+        local Ragdoll_Falling_Down = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Falling down")
+        Ragdoll_Falling_Down.Enabled = true
+        local Ragdoll_2 = game["Workspace"]["Ragdoll 2"]
+        Ragdoll_2.Enabled = true
+        local Ragdoll_1 = game["Workspace"]["Ragdoll 1"]
+        Ragdoll_1.Enabled = true
+        local Ragdoll_Server = game["Workspace"]["Ragdoll 1"]["Ragdoll_Server"]
+        Ragdoll_Server.Enabled = true
+        local Ragdoll_Admin = game:GetService("Workspace")["Ragdoll-Admin"]
+        Ragdoll_Admin.Enabled = true
+
+        if notif then
+            OrionLib:MakeNotification({
+                Name = "Anti Ragdoll Message!",
+                Content = "Anti Ragdoll Disabled!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+
+    end
+end
+})
+
+local PushSection = RagdollTab1:AddSection({
+    Name = "Push Functions"
+})
+
+local pushAura = false
+
+RagdollTab1:AddToggle({
+    Name = "Push Aura",
+    Default = false,
+    Callback = function(db)
+    if db then
+        notif = true
+        pushAura = true
+
+        OrionLib:MakeNotification({
+            Name = "Push Aura Message!",
+            Content = "Push Aura Enabled!",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+
+        if pushAura == true then
+
+            while task.wait(0.1) do
+
+                if pushAura == true then
+
+                    pcall(function()
+                        
+                        for _, player in pairs(game.Players:GetPlayers()) do
+
+                            if player ~= game.Players.LocalPlayer then
+
+                                local args = {
+                                    [1] = game:GetService("Players")[player.Name].Character
+                                }
+                                game:GetService("Players").LocalPlayer.Character.Push.PushTool:FireServer(unpack(args))
+
+                            end
+
+                        end
+
+                    end)
+
+                end
+
+            end
+
+        end
+
+        elseif db == false then
+
+            pushAura = false
+
+        if notif then
+            OrionLib:MakeNotification({
+                Name = "Push Aura Message!",
+                Content = "Push Aura Disabled!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+
+    end
+end
 })
 
 OrionLib:Init()
